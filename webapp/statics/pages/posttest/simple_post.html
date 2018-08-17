@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Post</title>
+    <script src="/statics/js/jquery-3.3.1.js"></script>
+</head>
+<body>
+
+    <fieldset>
+        <legend>Default enctype (application/x-www-form-urlencoded)</legend>
+        <form method="post" action="/post/simple/0">
+            <label for="code">编码</label>
+            <input id="code" name="code" type="text">
+            <label for="name">名称</label>
+            <input id="name" name="name" type="text">
+
+            <input type="submit" value="submit">
+        </form>
+    </fieldset>
+
+    <fieldset>
+        <legend>Specified enctype (multipart/form-data)</legend>
+        <form method="post" action="/post/simple/1" enctype="multipart/form-data">
+            <label for="code1">编码</label>
+            <input id="code1" name="code" type="text">
+            <label for="name1">名称</label>
+            <input id="name1" name="name" type="text">
+
+            <input type="submit" value="submit">
+        </form>
+    </fieldset>
+
+    <fieldset>
+        <legend>Ajax (application/json)</legend>
+        <form>
+            <label for="code2">编码</label>
+            <input id="code2" name="code" type="text">
+            <label for="name2">名称</label>
+            <input id="name2" name="name" type="text">
+
+            <input type="button" value="submit" onclick="submitForm2()">
+        </form>
+    </fieldset>
+
+    <fieldset>
+        <legend>Ajax (application/json) - JSON.stringify</legend>
+        <form>
+            <label for="code3">编码</label>
+            <input id="code3" name="code" type="text">
+            <label for="name3">名称</label>
+            <input id="name3" name="name" type="text">
+
+            <input type="button" value="submit" onclick="submitForm3()">
+        </form>
+    </fieldset>
+
+    <script type="text/javascript">
+        /**
+         * error occur because of not a json body data
+         * eg : code=222&name=3334
+         */
+        function submitForm2() {
+            var data = {
+                code : $("#code2").val(),
+                name : $("#name2").val()
+            };
+            $.ajax({
+                url: "/post/simple/2",
+                type: "post",
+                contentType: "application/json",
+                dataType: "json",
+                data: data,
+                success: function (res) {
+                    alert(JSON.stringify(res));
+                },
+                error: function (a, b, c) {
+                    alert("error occur");
+                }
+            });
+        }
+
+        function submitForm3() {
+            var data = {
+                code : $("#code3").val(),
+                name : $("#name3").val()
+            };
+            $.ajax({
+                url: "/post/simple/3",
+                type: "post",
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify(data),
+                success: function (res) {
+                    alert(JSON.stringify(res));
+                },
+                error: function (a, b, c) {
+                    alert("error occur");
+                }
+            });
+        }
+    </script>
+</body>
+</html>
